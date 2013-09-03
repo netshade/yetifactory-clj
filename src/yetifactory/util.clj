@@ -101,7 +101,6 @@
   (let [{status :status body :body headers :headers} response-map
         bodybuf                                      (get-body-bytebuf body)
         response                                     (DefaultFullHttpResponse. HttpVersion/HTTP_1_1 (HttpResponseStatus/valueOf (or status 200)) bodybuf)]
-    (pprint/pprint response-map)
     (doto response
         (set-headers (merge { "Content-Length" (.capacity bodybuf) } headers)))
     response))
