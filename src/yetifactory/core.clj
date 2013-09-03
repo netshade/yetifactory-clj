@@ -22,7 +22,6 @@
 
 (defn router [request]
   (def path (:uri request))
-  (println path)
   (cond
     (re-find #"^(/(index)?)?$" path)
       (index request)
