@@ -12,7 +12,8 @@
                                           HttpVersion
                                           HttpResponseStatus
                                           HttpHeaders$Names]
-           [io.netty.buffer Unpooled]))
+           [io.netty.buffer Unpooled]
+           [io.netty.util CharsetUtil]))
 
 (defn- get-headers
   "Creates a name/value map of all the request headers."
@@ -56,44 +57,26 @@
 (defn- get-body-bytebuf
   "Update a HttpResponse body with a String, ISeq, File or InputStream."
   [body]
-  (def bodylen (cond
+  (cond
     (string? body)
-      (alength (.getBytes body "UTF-8"))
+      (Unpooled/copiedBuffer body CharsetUtil/UTF_8) ; TODO: feels like using writeBytes is wrong here, given above UTF-8 len calc
     (seq? body)
-      (reduce + (fn [str] (alength (.getBytes str "UTF-8"))))
+      (Unpooled/copiedBuffer (string/join "" body) CharsetUtil/UTF_8)
     (instance? InputStream body)
-      nil
-    (instance? File body)
-      (.length body)
-    (nil? body)
-      0
-    :else
-      (throw (Exception. "Unrecognized body for len"))))
-  (let [initialCapacity (or bodylen 524288) ; 512kb
-        maxCapacity (or bodylen 1048576)    ; 1mb
-        buf (Unpooled/directBuffer initialCapacity maxCapacity) ; TODO: is using direct buffer here correct?
-        writer (ByteBufOutputStream. buf)]
-    (cond
-      (string? body)
-        (do
-          (.writeBytes writer body); TODO: feels like using writeBytes is wrong here, given above UTF-8 len calc
-          (.flush writer))
-      (seq? body)
-        (doseq [chunk body]
-          (.writeBytes writer body)
-          (.flush writer))
-      (instance? InputStream body)
-        (with-open [^InputStream b body]
+      (let [buf (Unpooled/buffer 524288)]
+        (with-open [writer (ByteBufOutputStream. buf)
+                    ^InputStream b body]
           (io/copy b writer))
-      (instance? File body)
-        (let [^File f body]
-          (with-open [stream (FileInputStream. f)]
-            (get-body-bytebuf stream)))
-      (nil? body)
-        nil
-      :else
-        (throw (Exception. ^String (format "Unrecognized body: %s" body))))
-    buf))
+        buf)
+    (instance? File body)
+      (let [buf (Unpooled/buffer (.length body))
+            writer (ByteBufOutputStream. buf)]
+        (io/copy body writer)
+        buf)
+    (nil? body)
+      Unpooled/EMPTY_BUFFER
+    :else
+      (throw (Exception. ^String (format "Unrecognized body: %s" body)))))
 
 (defn generate-netty-response
   "Update the FullHttpResponse using a response map."
@@ -101,6 +84,5 @@
   (let [{status :status body :body headers :headers} response-map
         bodybuf                                      (get-body-bytebuf body)
         response                                     (DefaultFullHttpResponse. HttpVersion/HTTP_1_1 (HttpResponseStatus/valueOf (or status 200)) bodybuf)]
-    (doto response
-        (set-headers (merge { "Content-Length" (.capacity bodybuf) } headers)))
+    (set-headers response (merge headers { "Content-Length" (.readableBytes bodybuf) }))
     response))

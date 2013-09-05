@@ -3,9 +3,9 @@
   (:use [clojure.stacktrace]))
 
 (defn route [request]
-  (def path (:uri request))
-  (cond
-    (re-find #"^(/(index)?)?$" path)
-      (app/index request)
-    :else
-      (app/notfound request)))
+  (let [path (:uri request)]
+    (cond
+      (re-find #"^(/(index)?)?$" path)
+        (app/index request)
+      :else
+        (app/notfound request))))

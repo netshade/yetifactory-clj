@@ -20,14 +20,24 @@ public class Netty
     return channel.close ();
   }
 
-  public static Channel flush (Channel channel)
+  public static ChannelHandlerContext flush (ChannelHandlerContext context)
   {
-    return channel.flush ();
+    return context.flush ();
   }
 
-  public static ChannelFuture write (Channel channel, Object message)
+  public static ChannelFuture write (ChannelHandlerContext context, Object message)
   {
-    return channel.write (message);
+    return context.write (message);
+  }
+
+  public static ChannelFuture writeAndFlush (ChannelHandlerContext context, Object message)
+  {
+    return context.writeAndFlush(message);
+  }
+
+  public static ChannelFuture disconnect (ChannelHandlerContext context)
+  {
+    return context.disconnect();
   }
 
   public static ChannelPipeline pipeline (Channel channel)
@@ -64,7 +74,7 @@ public static ServerBootstrap childHandler (ServerBootstrap bootstrap,
     return bootstrap.childHandler (handler);
   }
 
-  public static Bootstrap option (Bootstrap bootstrap,
+  public static ServerBootstrap option (ServerBootstrap bootstrap,
                                   ChannelOption option,
                                   Object value)
   {

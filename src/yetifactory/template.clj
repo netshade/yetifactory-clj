@@ -20,8 +20,8 @@
             { template :template selectors :selectors } response-map]
         (if-let [template-key (keyword template)]
           (if-let [content (template-key contentmap)]
-            (let [template-args (flatten (map identity (merge {} selectors)))]
-              (def result (apply l/document (cons (l/parse content) template-args)))
+            (let [template-args (flatten (map identity (merge {} selectors)))
+                  result (apply l/document (cons (l/parse content) template-args))]
               (merge response-map { :body result }))
             response-map)
           response-map)))))
