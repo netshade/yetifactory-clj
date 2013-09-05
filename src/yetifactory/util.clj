@@ -63,9 +63,9 @@
     (seq? body)
       (Unpooled/copiedBuffer (string/join "" body) CharsetUtil/UTF_8)
     (instance? InputStream body)
-      (let [buf (Unpooled/buffer 524288)]
-        (with-open [writer (ByteBufOutputStream. buf)
-                    ^InputStream b body]
+      (let [buf (Unpooled/buffer 524288)
+            writer (ByteBufOutputStream. buf)]
+        (with-open [^InputStream b body]
           (io/copy b writer))
         buf)
     (instance? File body)
