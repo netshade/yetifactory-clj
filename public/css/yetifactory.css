@@ -1,0 +1,16 @@
+@font-face {
+  font-family: ChunkFive;
+  src: url("/fonts/ChunkFive.otf") format("opentype");
+}
+
+h1,h2,h3,h4,h5 {
+  font-family: ChunkFive;
+}
+
+.navbar-header {
+  margin-left: 10px;
+}
+
+.sidebar-content {
+  padding-right: 10px;
+}
