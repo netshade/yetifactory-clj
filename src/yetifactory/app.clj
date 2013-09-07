@@ -1,13 +1,17 @@
 (ns yetifactory.app
   (:use [clojure.stacktrace])
-  (:require [me.raynes.laser :as l]))
+  (:require [clojure.pprint :as pprint])
+  (:require [yetifactory.db :as db])
+  (:require [clojure.string :as string]))
+
+
 
 (defn index [request]
   {:status 200
     :headers {"Content-Type" "text/html"}
     :template "index.html"
-    :selectors {
-      (l/class= "content") (l/content "I am dynamic content")
+    :vars {
+      :posts (db/list-posts)
     }
   })
 

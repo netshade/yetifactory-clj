@@ -1,6 +1,6 @@
 (ns yetifactory.template
   (:use [clojure.stacktrace])
-  (:require [me.raynes.laser :as l])
+  (:import [org.stringtemplate.v4 ST STRawGroupDir])
   (:require [clojure.java.io :as io])
   (:require [clojure.string :as string])
   (:require [clojure.pprint :as pprint])
@@ -14,19 +14,16 @@
 
 (defn- contentmap
   [template-root]
-  (let [directory         (io/file template-root)
-        directory-path    (str (.getAbsolutePath directory) "/")
-        files             (template-files template-root)
-        filepaths         (map (fn [f] (keyword (string/replace (.getAbsolutePath f) directory-path ""))) files)
-        filemap           (zipmap filepaths files)]
-    (zipmap filepaths (map (fn [f] (slurp (.getAbsolutePath f))) files))))
+  (STRawGroupDir. template-root \$ \$))
 
 (def templatemap nil)
 (def last-modified 0)
 (defn reload-templates
   [template-root]
   (println "Reloading templates...")
-  (def templatemap (contentmap template-root)))
+  (if (nil? templatemap)
+    (def templatemap (contentmap template-root))
+    (.unload templatemap)))
 
 (defn reload-if-modified
   [template-root]
@@ -36,17 +33,27 @@
         (def last-modified cur-last-modified)
         (reload-templates template-root)))))
 
+(defn- add-value-to-template
+  [k v template]
+  (cond
+    (seq? v)
+      (doseq [item v] (add-value-to-template k item template))
+    (map? v)
+      (let [pairs (string/join "," (map name (keys v)))
+            aggr-key (format "%s.{%s}" (name k) pairs)]
+        (.addAggr template aggr-key (to-array (vals v))))
+    :else
+      (.add template (name k) v)))
 
 (defn wrap-template
   [handler template-root]
   (fn [req]
     (reload-if-modified template-root)
-    (let [response-map                                (handler req)
-          { template :template selectors :selectors } response-map]
-      (if-let [template-key (keyword template)]
-        (if-let [content (template-key templatemap)]
-          (let [template-args (flatten (map identity (merge {} selectors)))
-                result (apply l/document (cons (l/parse content) template-args))]
-            (merge response-map { :body result }))
-          response-map)
+    (let [response-map                                    (handler req)
+          { template-name :template template-vars :vars } response-map]
+      (if-let [template (.getInstanceOf templatemap template-name)]
+        (do
+          (doseq [[k v] (merge {} template-vars)]
+            (add-value-to-template k v template))
+          (merge response-map { :body (.render template) }))
         response-map))))

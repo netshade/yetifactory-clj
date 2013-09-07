@@ -5,6 +5,9 @@
                  [markdown-clj "0.9.31"]
                  [ring/ring-core "1.2.0"]
                  [ring/ring-devel "1.2.0"]
-                 [me.raynes/laser "0.1.12"]]
+                 [org.antlr/ST4 "4.0.7"]
+                 [org.clojure/java.jdbc "0.3.0-alpha4"]
+                 [mysql/mysql-connector-java "5.1.6"]
+                 [com.mchange/c3p0 "0.9.2.1"]]
   :java-source-paths ["src/main/java"]
   :main yetifactory.core)

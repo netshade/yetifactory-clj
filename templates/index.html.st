@@ -18,7 +18,11 @@
     <section>
       <div class="row">
         <div class="content col-md-10">
-          <!-- content -->
+          $posts:{post|
+            <article>
+              <b>$post.title$</b>
+            </article>
+          }$
         </div>
         <div class="sidebar col-md-2">
           <div class="sidebar-content">
