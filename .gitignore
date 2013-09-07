@@ -2,3 +2,4 @@ target/classes
 .DS_Store
 .lein*
 pom.xml
+target/provided*
