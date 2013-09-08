@@ -1,4 +1,9 @@
 #!/bin/sh
+
+# This file treats .blog ( either in your HOME or in the current directory )
+# as the "live" blog information. You want to store credentials and remote
+# information in there.
+
 PWD=$(pwd)
 LOCAL_SETTINGS="${PWD}/.blog"
 USER_SETTINGS="~/.blog"
