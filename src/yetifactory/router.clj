@@ -1,13 +1,26 @@
 (ns yetifactory.router
   (:require [yetifactory.app :as app])
-  (:use [clojure.stacktrace]))
+  (:use [yetifactory.regex-match])
+  (:use [clojure.stacktrace])
+  (:use [clojure.core.match :only [match]]))
 
 (defn recognize
   [request]
-  (let [path (:uri request)]
-    (cond
-      (re-find #"^(/(index)?)?$" path)
+  (let [uri (:uri request)
+        method (:request-method request)]
+    (match [uri method request]
+      [(:or "/" "/index")           :get      _]
         :index
+      [#"/post/(\d+)-.+"            :get      _]
+        :show-post
+      ["/teapot"                    :get      _]
+        :teapot
+      ["/post"                      :post     _]
+        :create-post
+      [#"/post/(\d+)-.+"            :delete   _]
+        :destroy-post
+      [#"/post/(\d+)-.+"            :put      _]
+        :update-post
       :else
         :notfound)))
 

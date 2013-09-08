@@ -41,6 +41,7 @@
      :request-method     (keyword (.toLowerCase (.toString (.getMethod request))))
      :headers            (get-headers request)
      :content-type       (.get headers HttpHeaders$Names/CONTENT_TYPE)
+     :accept             (.get headers HttpHeaders$Names/ACCEPT)
      :content-length     (HttpHeaders/getContentLength request 0)
      :character-encoding (.get headers HttpHeaders$Names/CONTENT_ENCODING)
      :body               (ByteBufInputStream. (.content request))}))

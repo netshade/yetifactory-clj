@@ -7,10 +7,8 @@ CREATE TABLE IF NOT EXISTS posts (
   body        TEXT,
   body_md     TEXT,
   snippet     TEXT,
-  snippet_md  TEXT,
   created_at  DATETIME NOT NULL,
   updated_at  DATETIME NOT NULL,
   PRIMARY KEY(id)
 );
 ALTER TABLE posts ADD UNIQUE INDEX (slug);
-

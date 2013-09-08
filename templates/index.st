@@ -1,7 +1,7 @@
 $posts:{post|
   <section>
     <heading>
-      <h3><a href="/post/$post.id$">$post.title$</a></h3>
+      <h3><a href="/post/$post.slug$">$post.title$</a></h3>
       <p>
         <time datetime="$post.created_at$">
           $post.created_at_ago$
@@ -9,7 +9,7 @@ $posts:{post|
       </p>
     </heading>
     <p class="snippet">
-      $post.body_snippet$
+      $post.snippet$
     </p>
   </section>
 }$

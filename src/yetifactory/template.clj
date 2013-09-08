@@ -68,7 +68,7 @@
           template-name                    (:template template-options)
           template-vars                    (merge {} (:vars template-options))
           template-layout                  (.getInstanceOf templatemap (layout-name-from-response template-options))
-          template-route                   (.getInstanceOf templatemap route-name)
+          template-route                   (.getInstanceOf templatemap template-name)
           all-templates                    (filter #(not (nil? %)) [template-layout template-route])
           body                             (:body response-map)]
       (if (nil? body)

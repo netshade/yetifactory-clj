@@ -22,3 +22,7 @@ h1,h2,h3,h4,h5 {
 .content section time {
   font-size: 80%;
 }
+
+section h1 {
+  display:none;
+}
