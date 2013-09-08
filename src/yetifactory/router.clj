@@ -2,10 +2,16 @@
   (:require [yetifactory.app :as app])
   (:use [clojure.stacktrace]))
 
-(defn route [request]
+(defn recognize
+  [request]
   (let [path (:uri request)]
     (cond
       (re-find #"^(/(index)?)?$" path)
-        (app/index request)
+        :index
       :else
-        (app/notfound request))))
+        :notfound)))
+
+(defn route [request]
+  (let [routename  (recognize request)
+        appfn      (ns-resolve (symbol "yetifactory.app") (symbol (name routename)))]
+    (apply appfn [request])))

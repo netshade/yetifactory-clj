@@ -4,8 +4,11 @@
   (:require [clojure.java.io :as io])
   (:require [clojure.string :as string])
   (:require [clojure.pprint :as pprint])
+  (:require [yetifactory.router :as router])
   (:gen-class))
 
+(def templatemap nil)
+(def last-modified 0)
 
 (defn- template-files
   [template-root]
@@ -16,18 +19,16 @@
   [template-root]
   (STRawGroupDir. template-root \$ \$))
 
-(def templatemap nil)
-(def last-modified 0)
-(defn reload-templates
+(defn- reload-templates
   [template-root]
   (println "Reloading templates...")
   (if (nil? templatemap)
     (def templatemap (contentmap template-root))
     (.unload templatemap)))
 
-(defn reload-if-modified
+(defn- reload-if-modified
   [template-root]
-  (let [cur-last-modified (apply max (map #(.lastModified %1) (template-files template-root)))]
+  (let [cur-last-modified (apply max (map #(.lastModified %) (template-files template-root)))]
     (if (> cur-last-modified last-modified)
       (do
         (def last-modified cur-last-modified)
@@ -45,15 +46,41 @@
     :else
       (.add template (name k) v)))
 
+(defn- layout-name-from-response
+  [response-map]
+  (let [layout (:layout response-map)]
+    (cond
+      (true? layout)
+        "layout"
+      (string? layout)
+        layout
+      :else
+        nil)))
+
 (defn wrap-template
   [handler template-root]
   (fn [req]
     (reload-if-modified template-root)
-    (let [response-map                                    (handler req)
-          { template-name :template template-vars :vars } response-map]
-      (if-let [template (.getInstanceOf templatemap template-name)]
+    (let [route-name                       (name (router/recognize req))
+          template-options-default         { :template route-name :layout true }
+          response-map                     (handler req)
+          template-options                 (merge template-options-default response-map)
+          template-name                    (:template template-options)
+          template-vars                    (merge {} (:vars template-options))
+          template-layout                  (.getInstanceOf templatemap (layout-name-from-response template-options))
+          template-route                   (.getInstanceOf templatemap route-name)
+          all-templates                    (filter #(not (nil? %)) [template-layout template-route])
+          body                             (:body response-map)]
+      (if (nil? body)
         (do
-          (doseq [[k v] (merge {} template-vars)]
-            (add-value-to-template k v template))
-          (merge response-map { :body (.render template) }))
+          (doseq [template all-templates]
+            (doseq [[k v] template-vars]
+              (add-value-to-template k v template)))
+          (if (> (count all-templates) 1)
+            (add-value-to-template "__content__" (.render (last all-templates)) (first all-templates)))
+            ; TODO:
+            ; This __content__ special var is less than ideal, but going w/ it for now due
+            ; StringTemplate not supporting passthru (...) on dynamic templates. Probably
+            ; a simpler way.
+          (merge response-map { :body (.render (first all-templates)) }))
         response-map))))

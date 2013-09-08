@@ -8,8 +8,6 @@
 
 (defn index [request]
   {:status 200
-    :headers {"Content-Type" "text/html"}
-    :template "index.html"
     :vars {
       :posts (db/list-posts)
     }
