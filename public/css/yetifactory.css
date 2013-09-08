@@ -14,3 +14,11 @@ h1,h2,h3,h4,h5 {
 .sidebar-content {
   padding-right: 10px;
 }
+
+.content section {
+  padding-left: 10px;
+}
+
+.content section time {
+  font-size: 80%;
+}
