@@ -3,3 +3,4 @@ target/classes
 .lein*
 pom.xml
 target/provided*
+.blog

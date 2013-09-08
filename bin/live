@@ -1,0 +1,13 @@
+#!/bin/sh
+PWD=$(pwd)
+LOCAL_SETTINGS="${PWD}/.blog"
+USER_SETTINGS="~/.blog"
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+if [ -f $LOCAL_SETTINGS ]; then
+    source $LOCAL_SETTINGS
+elif [ -f $USER_SETTINGS ]; then
+    source $USER_SETTINGS
+fi
+
+exec "${DIR}/blog"

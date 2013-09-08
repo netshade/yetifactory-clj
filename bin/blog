@@ -1,0 +1,42 @@
+#!/bin/sh
+set -e
+EDITOR=${EDITOR:="vi"}
+BLOGHOST=${BLOGHOST:="http://localhost:5000"}
+
+if [ $# -lt 1 ]
+then
+        echo "Usage : $0 (new|list|edit|destroy)"
+        echo "Current host: ${BLOGHOST}"
+        echo "Current editor: ${EDITOR}"
+        exit
+fi
+
+
+function mdtemp()
+{
+  local tempfile=$(mktemp -t blog)
+  local mdtemp="${tempfile}.md"
+  mv $tempfile $mdtemp
+  echo "$mdtemp"
+}
+
+case "$1" in
+  "new") TEMPFILE=$(mdtemp)
+         $EDITOR $TEMPFILE && \
+           [ -s $TEMPFILE ] && \
+           curl -f --data-binary "@${TEMPFILE}" "${BLOGHOST}/post" && \
+           rm $TEMPFILE
+         ;;
+  "list") curl -H "Accept: text/csv" "${BLOGHOST}/index"
+          ;;
+  "edit") TEMPFILE=$(mdtemp)
+          curl -f -O $TEMPFILE -H "Accept: text/markdown" "${BLOGHOST}/post/${2}"
+          $EDITOR $TEMPFILE && \
+            [ -s $TEMPFILE ] && \
+            curl -f --data-binary "@${TEMPFILE}" -X PUT "${BLOGHOST}/post/${2}" && \
+            rm $TEMPFILE
+          ;;
+  "destroy") curl -f -X DELETE "${BLOGHOST}/post/${2}"
+             ;;
+esac
+
