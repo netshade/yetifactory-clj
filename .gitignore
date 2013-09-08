@@ -4,3 +4,4 @@ target/classes
 pom.xml
 target/provided*
 .blog
+config/production.properties
