@@ -1,7 +1,7 @@
 (defproject yetifactory.core "0.0.1-HAIRY"
   :description "Baby's first clojure app"
   :dependencies [[org.clojure/clojure "1.5.1"]
-                 [io.netty/netty-all "4.0.8.Final"]
+                 [io.netty/netty-all "4.0.9.Final"]
                  [ring/ring-core "1.2.0"]
                  [ring/ring-devel "1.2.0"]
                  [org.antlr/ST4 "4.0.7"]
