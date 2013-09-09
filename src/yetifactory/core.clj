@@ -11,14 +11,15 @@
   (:require [clojure.pprint :as pprint]))
 
 (defn -main []
-  (adapter/run-server
-      (header-defaults/wrap-header-defaults
-        (file-info/wrap-file-info
-          (file/wrap-file
-            (template/wrap-template router/route "./templates")
-          "./public"))
-        {
-          "Content-Type"  "text/html"
-          "Cache-Control" "no-cache, no-store"
-        })
-    { :port (or (env :port) 5000) }))
+  (let [port (or (env :port) 5000)]
+    (adapter/run-server
+        (header-defaults/wrap-header-defaults
+          (file-info/wrap-file-info
+            (file/wrap-file
+              (template/wrap-template router/route "./templates")
+            "./public"))
+          {
+            "Content-Type"  "text/html"
+            "Cache-Control" "no-cache, no-store"
+          })
+      { :port (if (string? port) (Integer/parseInt port) port) })))
