@@ -3,4 +3,5 @@
 # we want to run w/ lein since
 # clojure.core.match doesn't
 # behave well when being AOT run.
+lein deps
 true
