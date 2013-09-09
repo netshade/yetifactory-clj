@@ -4,6 +4,8 @@ concepts in clojure to render webpages.  Eventually will fetch markdown data
 from a database, render it into a [laser][2] template, and serve via a 
 Netty handler.
 
+TODOs littered throughout the app. Also here: Heroku support.
+
 ## Usage
     lein deps
     lein run
