@@ -6,15 +6,16 @@ written to serve my [yeti-factory][4] needs, which is to say that it mostly
 exists to let me play with Clojure, and perhaps occasionally write a blog
 post.
 
-Features:
- * Programmer "friendly". Written in Lisp with what I hope is sane organization.
- * [Ring][5] compatible, so you can use existing Ring middleware to wrap your requests.
- * Template driven with a layout style somewhat similar to Rails. Uses [StringTemplate][2].
- * Fast, thanks to [Netty][3].
- * Command-line driven, so you can use your favorite `$EDITOR` to write posts.
- * Automatically uploads local assets to S3 if they are referenced in the outgoing post.
- * Written in short spurts over the past two weeks, so you know the software quality is high
- * No tests, because laziness
+## Features:
+
+* Programmer "friendly". Written in Lisp with what I hope is sane organization.
+* [Ring][5] compatible, so you can use existing Ring middleware to wrap your requests.
+* Template driven with a layout style somewhat similar to Rails. Uses [StringTemplate][2].
+* Fast, thanks to [Netty][3].
+* Command-line driven, so you can use your favorite `$EDITOR` to write posts.
+* Automatically uploads local assets to S3 if they are referenced in the outgoing post.
+* Written in short spurts over the past two weeks, so you know the software quality is high
+* No tests, because laziness
 
 The command line driver is available in `bin/live`, and may be configured in
 a shell file avaliable in `$HOME/.blog`. See the configuration section for
