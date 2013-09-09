@@ -2,10 +2,11 @@
   (:require [yetifactory.app :as app])
   (:require [clojure.string :as string])
   (:require [clojure.data.codec.base64 :as b64])
-  (:use [yetifactory.regex-match])
+  (:gen-class)
   (:use [environ.core])
   (:use [clojure.stacktrace])
-  (:use [clojure.core.match :only [match]]))
+  (:use [clojure.core.match])
+  (:use [yetifactory.regex-match]))
 
 (defn recognize
   [request]
