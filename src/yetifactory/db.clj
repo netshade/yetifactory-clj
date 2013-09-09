@@ -1,14 +1,19 @@
 (ns yetifactory.db
   (:use [clojure.stacktrace])
+  (:use [environ.core])
   (:import [com.mchange.v2.c3p0 ComboPooledDataSource])
   (:require [clojure.pprint :as pprint])
   (:require [clojure.java.jdbc :as j]
             [clojure.java.jdbc.sql :as sql]))
 
-(def db-config {  :classname    "com.mysql.jdbc.Driver"
-                  :subprotocol  "mysql"
-                  :subname      "//127.0.0.1:3306/yetifactory"
-                  :user         "root"})
+(def db-config {  :classname    (or (env :db-driver) "com.mysql.jdbc.Driver")
+                  :subprotocol  (or (env :db-protocol) "mysql")
+                  :subname      (str "//"
+                                    (or (env :db-host) "localhost")
+                                    "/"
+                                    (or (env :db-name) "blog"))
+                  :user         (or (env :db-user) "root")
+                  :password     (or (env :db-password) "")})
 
 (defn pool
   [spec]
