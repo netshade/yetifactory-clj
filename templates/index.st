@@ -11,5 +11,6 @@ $posts:{post|
     <p class="snippet">
       $post.snippet$
     </p>
+    <a href="/post/$post.slug$">Read more...</a>
   </section>
 }$
