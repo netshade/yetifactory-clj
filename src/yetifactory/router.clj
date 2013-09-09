@@ -43,9 +43,9 @@
         false)))
 
 (defn- authUsername []
-  (or (env :auth-user) "test"))
+  (or (env :user) "test"))
 (defn- authPassword []
-  (or (env :auth-password "test")))
+  (or (env :password) "test"))
 
 (defn route [request]
   (let [routename  (recognize request)
