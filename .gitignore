@@ -1,8 +1,6 @@
-target/classes
 .DS_Store
 .lein*
 pom.xml
-target/provided*
-target/stale
+target
 .blog
 config/production.properties
