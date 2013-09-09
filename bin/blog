@@ -21,6 +21,16 @@ function mdtemp()
   echo "$mdtemp"
 }
 
+# TODO: finish this to do postprocessing runs
+# on auto-uploading assets
+# function upload_assets()
+# {
+#   local local_files=$(echo "<div>" `markdown ${1}` "</div>" | \
+#                         xmlstarlet sel -t -v "//*/@href" -n -v "//*/@src" | \
+#                         xargs -I{} sh -c "[ -f {} ] && echo '{}'")
+#   echo $local_files | xargs -I{}
+# }
+
 case "$1" in
   "new") TEMPFILE=$(mdtemp)
          $EDITOR $TEMPFILE && \
@@ -31,7 +41,7 @@ case "$1" in
   "list") curl -H "Accept: text/csv" "${BLOGHOST}/index"
           ;;
   "edit") TEMPFILE=$(mdtemp)
-          curl -f -O $TEMPFILE -H "Accept: text/markdown" "${BLOGHOST}/post/${2}"
+          curl -f -o $TEMPFILE -H "Accept: text/markdown" "${BLOGHOST}/post/${2}"
           $EDITOR $TEMPFILE && \
             [ -s $TEMPFILE ] && \
             curl -f --user "${USERNAME}:${PASSWORD}" --data-binary "@${TEMPFILE}" -X PUT "${BLOGHOST}/post/${2}" && \
