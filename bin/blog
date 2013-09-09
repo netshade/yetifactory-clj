@@ -4,8 +4,6 @@ EDITOR=${EDITOR:="vi"}
 BLOGHOST=${BLOGHOST:="http://localhost:5000"}
 USERNAME=${USERNAME:="test"}
 PASSWORD=${PASSWORD:="test"}
-S3_BUCKET=${S3_BUCKET:="blog"}
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 if [ $# -lt 1 ]
 then
@@ -23,21 +21,35 @@ function mdtemp()
   echo "$mdtemp"
 }
 
-# TODO: finish this to do postprocessing runs
-# on auto-uploading assets
-# function upload_assets()
-# {
-#   local local_files=$(echo "<div>" `markdown ${1}` "</div>" | \
-#                         xmlstarlet sel -t -v "//*/@href" -n -v "//*/@src" | \
-#                         xargs -I{} sh -c "[ -f {} ] && echo '{}'")
-#   $DIR/aws mkdir $S3_BUCKET
-#   echo "${local_files}" | xargs -I{} $DIR/aws put $S3_BUCKET {}
-# }
+function uploadscript()
+{
+  if [ -z "${UPLOAD_SCRIPT}" ]; then
+    echo ""
+  else
+    echo "${UPLOAD_SCRIPT}"
+  fi
+}
+
+function douploads()
+{
+  local script="$(uploadscript)"
+  if [ -n script ]; then
+    LOCAL_FILES=$(echo "<div>" `markdown ${1}` "</div>" | \
+                          xmlstarlet sel -t -v "//*/@href" -n -v "//*/@src" | \
+                          xargs -I{} sh -c "[ -f {} ] && echo '{}'" | \
+                          sort | \
+                          uniq)
+    echo "${LOCAL_FILES}" | $script | ruby -ne "local, remote = \$_.chomp.split(/:/); c = nil; File.open('${1}', 'r+') { |f| c = f.read.to_s.gsub(local, remote); f.rewind; f.write(c) }; puts(remote)"  # sorry
+  else
+    return 0
+  fi
+}
 
 case "$1" in
   "new") TEMPFILE=$(mdtemp)
          $EDITOR $TEMPFILE && \
            [ -s $TEMPFILE ] && \
+           douploads $TEMPFILE && \
            curl -f -vvvv --user "${USERNAME}:${PASSWORD}" --data-binary "@${TEMPFILE}" "${BLOGHOST}/post" && \
            rm $TEMPFILE
          ;;
@@ -47,6 +59,7 @@ case "$1" in
           curl -f -o $TEMPFILE -H "Accept: text/markdown" "${BLOGHOST}/post/${2}"
           $EDITOR $TEMPFILE && \
             [ -s $TEMPFILE ] && \
+            douploads $TEMPFILE && \
             curl -f --user "${USERNAME}:${PASSWORD}" --data-binary "@${TEMPFILE}" -X PUT "${BLOGHOST}/post/${2}" && \
             rm $TEMPFILE
           ;;
