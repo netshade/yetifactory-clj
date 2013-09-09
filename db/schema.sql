@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS yetifactory;
-USE yetifactory;
+CREATE DATABASE IF NOT EXISTS blog;
+USE blog;
 CREATE TABLE IF NOT EXISTS posts (
   id          INT(11) NOT NULL AUTO_INCREMENT,
   title       VARCHAR(255) NOT NULL,
