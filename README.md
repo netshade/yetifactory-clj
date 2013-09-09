@@ -10,6 +10,9 @@ TODOs littered throughout the app. Also here: Heroku support.
     lein deps
     lein run
 
+or
+    foreman run
+
 ## Sending a message
 
 The default port is 5000 out of respect to the original author of [clojure-netty][1] 
