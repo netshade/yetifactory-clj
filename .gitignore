@@ -3,5 +3,6 @@ target/classes
 .lein*
 pom.xml
 target/provided*
+target/stale
 .blog
 config/production.properties
