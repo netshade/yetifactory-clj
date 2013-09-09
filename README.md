@@ -27,6 +27,7 @@ post.
 * RSS support probably.
 * Remove yetifactory name, come up with a better name
 * Remove my specific blog styling, keep in a separate branch. Maybe.
+* `grep -ri 'TODO'`
 
 The command line driver is available in `bin/live`, and may be configured in
 a shell file avaliable in `$HOME/.blog`. See the configuration section for
