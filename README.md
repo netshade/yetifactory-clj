@@ -17,6 +17,16 @@ post.
 * Written in short spurts over the past two weeks, so you know the software quality is high
 * No tests, because laziness
 
+## TODO:
+
+* Ensure Heroku support.
+* Better caching header defaults.
+* Environment specific behavior, like template loading.
+* Maybe? not use environment variables for config everywhere.
+* RSS support probably.
+* Remove yetifactory name, come up with a better name
+* Remove my specific blog styling, keep in a separate branch. Maybe.
+
 The command line driver is available in `bin/live`, and may be configured in
 a shell file avaliable in `$HOME/.blog`. See the configuration section for
 more details.
