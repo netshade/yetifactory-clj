@@ -8,8 +8,7 @@
   (:require [ring.middleware.file-info :as file-info])
   (:require [yetifactory.template :as template])
   (:require [yetifactory.header-defaults :as header-defaults])
-  (:require [clojure.pprint :as pprint])
-  (:gen-class))
+  (:require [clojure.pprint :as pprint]))
 
 (defn -main []
   (adapter/run-server

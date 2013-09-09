@@ -1,6 +1,5 @@
 (ns yetifactory.regex-match
   (:import [java.util.regex Pattern])
-  (:gen-class)
   (:use [clojure.core.match]))
 
 

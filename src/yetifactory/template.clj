@@ -4,8 +4,7 @@
   (:require [clojure.java.io :as io])
   (:require [clojure.string :as string])
   (:require [clojure.pprint :as pprint])
-  (:require [yetifactory.router :as router])
-  (:gen-class))
+  (:require [yetifactory.router :as router]))
 
 (def templatemap nil)
 (def last-modified 0)

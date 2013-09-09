@@ -2,7 +2,6 @@
   (:require [yetifactory.app :as app])
   (:require [clojure.string :as string])
   (:require [clojure.data.codec.base64 :as b64])
-  (:gen-class)
   (:use [environ.core])
   (:use [clojure.stacktrace])
   (:use [clojure.core.match])
