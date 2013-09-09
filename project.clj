@@ -16,6 +16,7 @@
                  [environ "0.4.0"]]
   :java-source-paths ["src/main/java"]
   :plugins [[lein-environ "0.4.0"]]
+  :min-lein-version "2.0.0"
   :main yetifactory.core
   :profiles { :user {
     :db-host          "127.0.0.1:3306"
