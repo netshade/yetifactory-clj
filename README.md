@@ -86,6 +86,9 @@ want to change via whatever mechanism your server has environment variables set.
 
 ## Usage
 
+
+### Startup
+
 ```sh
 lein deps
 lein run
@@ -99,6 +102,8 @@ foreman run
 
 will run the server.  By default content is available on port `5000`.
 
+### List Content
+
 To manage content, you'll want to use `bin/live` in the
 following method:
 
@@ -107,6 +112,8 @@ bin/live list
 ```
 
 will list available blog posts in CSV format `SLUG,TITLE`.
+
+### Manage Content
 
 ```sh
 bin/live new
