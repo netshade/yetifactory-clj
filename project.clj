@@ -11,6 +11,20 @@
                  [com.mchange/c3p0 "0.9.2.1"]
                  [org.ocpsoft.prettytime/prettytime "3.0.2.Final"]
                  [clj-http "0.7.6"]
-                 [org.clojure/data.json "0.2.3"]]
+                 [org.clojure/data.codec "0.1.0"]
+                 [org.clojure/data.json "0.2.3"]
+                 [environ "0.4.0"]]
   :java-source-paths ["src/main/java"]
-  :main yetifactory.core)
+  :plugins [[lein-environ "0.4.0"]]
+  :main yetifactory.core
+  :profiles { :user {
+    :db-host          "127.0.0.1:3306"
+    :db-user          "root"
+    :db-password      nil
+    :db-name          "blog"
+    :db-protocol      "mysql"
+    :db-driver        "com.mysql.jdbc.Driver"
+    :auth-user        "test"
+    :auth-password    "test"
+    :port             5000
+  }})
