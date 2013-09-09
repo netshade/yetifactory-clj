@@ -4,6 +4,8 @@ EDITOR=${EDITOR:="vi"}
 BLOGHOST=${BLOGHOST:="http://localhost:5000"}
 USERNAME=${USERNAME:="test"}
 PASSWORD=${PASSWORD:="test"}
+S3_BUCKET=${S3_BUCKET:="blog"}
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 if [ $# -lt 1 ]
 then
@@ -28,7 +30,8 @@ function mdtemp()
 #   local local_files=$(echo "<div>" `markdown ${1}` "</div>" | \
 #                         xmlstarlet sel -t -v "//*/@href" -n -v "//*/@src" | \
 #                         xargs -I{} sh -c "[ -f {} ] && echo '{}'")
-#   echo $local_files | xargs -I{}
+#   $DIR/aws mkdir $S3_BUCKET
+#   echo "${local_files}" | xargs -I{} $DIR/aws put $S3_BUCKET {}
 # }
 
 case "$1" in
