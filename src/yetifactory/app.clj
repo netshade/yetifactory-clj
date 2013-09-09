@@ -13,8 +13,7 @@
     :body "Not Found" })
 
 (defn teapot [request]
-  { :status 418
-    :body "halo" })
+  { :status 418 :body "halo" })
 
 (defn index [request]
   {:status        200
