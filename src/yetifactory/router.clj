@@ -12,17 +12,17 @@
   (let [uri (:uri request)
         method (:request-method request)]
     (match [uri method request]
-      [(:or "/" "/index")           :get      _]
+      [#"^/(index)?$"                 :get      _]
         :index
-      [#"/post/(\d+)-.*"            :get      _]
+      [#"^/post/(\d+)-.*$"            :get      _]
         :show-post
-      ["/teapot"                    :get      _]
+      ["/teapot"                      :get      _]
         :teapot
-      ["/post"                      :post     _]
+      ["/post"                        :post     _]
         :create-post
-      [#"/post/(\d+)-.*"            :delete   _]
+      [#"^/post/(\d+)-.*$"            :delete   _]
         :destroy-post
-      [#"/post/(\d+)-.*"            :put      _]
+      [#"^/post/(\d+)-.*$"            :put      _]
         :update-post
       :else
         :notfound)))
