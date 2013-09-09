@@ -15,4 +15,4 @@ elif [ -f $USER_SETTINGS ]; then
     source $USER_SETTINGS
 fi
 
-exec "${DIR}/blog"
+exec "${DIR}/blog" "$@"

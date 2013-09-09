@@ -2,12 +2,13 @@
 set -e
 EDITOR=${EDITOR:="vi"}
 BLOGHOST=${BLOGHOST:="http://localhost:5000"}
+USERNAME=${USERNAME:="test"}
+PASSWORD=${PASSWORD:="test"}
 
 if [ $# -lt 1 ]
 then
         echo "Usage : $0 (new|list|edit|destroy)"
-        echo "Current host: ${BLOGHOST}"
-        echo "Current editor: ${EDITOR}"
+        echo "Current host: ${BLOGHOST}, editor: ${EDITOR}, user: ${USERNAME}"
         exit
 fi
 
@@ -24,7 +25,7 @@ case "$1" in
   "new") TEMPFILE=$(mdtemp)
          $EDITOR $TEMPFILE && \
            [ -s $TEMPFILE ] && \
-           curl -f --data-binary "@${TEMPFILE}" "${BLOGHOST}/post" && \
+           curl -f -vvvv --user "${USERNAME}:${PASSWORD}" --data-binary "@${TEMPFILE}" "${BLOGHOST}/post" && \
            rm $TEMPFILE
          ;;
   "list") curl -H "Accept: text/csv" "${BLOGHOST}/index"
@@ -33,10 +34,10 @@ case "$1" in
           curl -f -O $TEMPFILE -H "Accept: text/markdown" "${BLOGHOST}/post/${2}"
           $EDITOR $TEMPFILE && \
             [ -s $TEMPFILE ] && \
-            curl -f --data-binary "@${TEMPFILE}" -X PUT "${BLOGHOST}/post/${2}" && \
+            curl -f --user "${USERNAME}:${PASSWORD}" --data-binary "@${TEMPFILE}" -X PUT "${BLOGHOST}/post/${2}" && \
             rm $TEMPFILE
           ;;
-  "destroy") curl -f -X DELETE "${BLOGHOST}/post/${2}"
+  "destroy") curl -f --user "${USERNAME}:${PASSWORD}" -X DELETE "${BLOGHOST}/post/${2}"
              ;;
 esac
 
