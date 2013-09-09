@@ -6,9 +6,8 @@
 
 PWD=$(pwd)
 LOCAL_SETTINGS="${PWD}/.blog"
-USER_SETTINGS="~/.blog"
+USER_SETTINGS="${HOME}/.blog"
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
 if [ -f $LOCAL_SETTINGS ]; then
     source $LOCAL_SETTINGS
 elif [ -f $USER_SETTINGS ]; then
