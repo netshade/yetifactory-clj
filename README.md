@@ -19,6 +19,7 @@ post.
 
 ## TODO:
 
+* Better organization, ala `yetifactory.app.middleware`, etc.
 * Ensure Heroku support.
 * Better caching header defaults.
 * Environment specific behavior, like template loading.
