@@ -15,7 +15,7 @@ fi
 
 function mdtemp()
 {
-  local tempfile=$(mktemp -t blog)
+  local tempfile=$(mktemp -t $1)
   local mdtemp="${tempfile}.md"
   mv $tempfile $mdtemp
   echo "$mdtemp"
@@ -45,23 +45,28 @@ function douploads()
   fi
 }
 
+# TODO: Centralize new and edit behavior
 case "$1" in
-  "new") TEMPFILE=$(mdtemp)
+  "new") TEMPFILE=$(mdtemp "new-blog-post")
+         BASETEMP=$(basename ${TEMPFILE})
          $EDITOR $TEMPFILE && \
            [ -s $TEMPFILE ] && \
            douploads $TEMPFILE && \
            curl -f -vvvv --user "${USERNAME}:${PASSWORD}" --data-binary "@${TEMPFILE}" "${BLOGHOST}/post" && \
-           rm $TEMPFILE
+           rm $TEMPFILE ||
+           cp $TEMPFILE . && echo "Save aborted, post copied to ${BASETEMP}"
          ;;
   "list") curl -H "Accept: text/csv" "${BLOGHOST}/index"
           ;;
-  "edit") TEMPFILE=$(mdtemp)
+  "edit") TEMPFILE=$(mdtemp "${2}")
+          BASETEMP=$(basename ${TEMPFILE})
           curl -f -o $TEMPFILE -H "Accept: text/markdown" "${BLOGHOST}/post/${2}"
           $EDITOR $TEMPFILE && \
             [ -s $TEMPFILE ] && \
             douploads $TEMPFILE && \
             curl -f --user "${USERNAME}:${PASSWORD}" --data-binary "@${TEMPFILE}" -X PUT "${BLOGHOST}/post/${2}" && \
-            rm $TEMPFILE
+            rm $TEMPFILE ||
+            cp $TEMPFILE . && echo "Save aborted, post copied to ${BASETEMP}"
           ;;
   "destroy") curl -f --user "${USERNAME}:${PASSWORD}" -X DELETE "${BLOGHOST}/post/${2}"
              ;;
