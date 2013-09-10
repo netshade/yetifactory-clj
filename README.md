@@ -29,6 +29,8 @@ post.
 * Remove yetifactory name, come up with a better name
 * Remove my specific blog styling, keep in a separate branch. Maybe.
 * `grep -ri 'TODO' .`
+* A 500 page
+* Pagination, probably for when I write > 20 blog posts
 
 The command line driver is available in `bin/live`, and may be configured in
 a shell file avaliable in `$HOME/.blog`. See the configuration section for
@@ -50,6 +52,10 @@ export DB_HOST="the-database-host"
 export DB_USER="the-database-user"
 export DB_PASSWORD="the-database-password"
 export DB_NAME="the-database-name"
+# Disqus can be enabled by
+export DISQUS_NAME="your-disqus-name"
+# Google Analytics can be enabled by
+export GOOGLE_ANALYTICS_ID="your-ga-id"
 
 # Client side setup goes in .blog, can go in working directory or $HOME
 export USERNAME="the-username-for-editing-content"
