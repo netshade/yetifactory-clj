@@ -5,6 +5,7 @@
     <title>Yeti Factory</title>
     <link href="/css/bootstrap.min.css" rel="stylesheet" />
     <link href="/css/yetifactory.css" rel="stylesheet" />
+    <link href="/css/gfm.css" rel="stylesheet" />
     <link rel="alternate" type="application/rss+xml" title="RSS" href="http://yeti-factory.org/feed.rss" />
   </head>
   <body>
@@ -21,7 +22,7 @@
     <section>
       <div class="row">
         <div class="content col-md-10">
-          $__content__$
+$__content__$
         </div>
         <div class="sidebar col-md-2">
           <div class="sidebar-content">

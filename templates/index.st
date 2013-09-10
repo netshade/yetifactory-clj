@@ -9,7 +9,7 @@ $posts:{post|
       </p>
     </heading>
     <p class="snippet">
-      $post.snippet$
+$post.snippet$
     </p>
     <a href="/post/$post.slug$">Read more...</a>
   </section>

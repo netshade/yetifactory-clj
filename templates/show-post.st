@@ -8,7 +8,7 @@
     </p>
   </heading>
   <p class="body">
-    $post.body$
+$post.body$
   </p>
 
   $if(disqus_name)$
