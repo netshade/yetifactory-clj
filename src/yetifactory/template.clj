@@ -65,7 +65,7 @@
           response-map                     (handler req)
           template-options                 (merge template-options-default response-map)
           template-name                    (:template template-options)
-          template-vars                    (merge (or {} template-defaults) (:vars template-options))
+          template-vars                    (merge (or template-defaults {}) (:vars template-options))
           template-layout                  (.getInstanceOf templatemap (layout-name-from-response template-options))
           template-route                   (.getInstanceOf templatemap template-name)
           all-templates                    (filter #(not (nil? %)) [template-layout template-route])
