@@ -5,6 +5,7 @@
     <title>Yeti Factory</title>
     <link href="/css/bootstrap.min.css" rel="stylesheet" />
     <link href="/css/yetifactory.css" rel="stylesheet" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="http://yeti-factory.org/feed.rss" />
   </head>
   <body>
     <nav class="navbar navbar-default navbar-static-top" role="navigation">
