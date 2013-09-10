@@ -38,10 +38,7 @@ a shell file avaliable in `$HOME/.blog`. See the configuration section for
 more details.
 
 Originally taken from [clojure-netty][1], now me playing around w/ different
-concepts in clojure to render webpages.  Eventually will fetch markdown data
-from a database, render it into a [StringTemplate][2] template, and serve via a
-[Netty][3] handler.
-
+concepts in clojure to render webpages.  
 
 ## Configuration
 
