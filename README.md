@@ -9,6 +9,7 @@ post.
 ## Features:
 
 * Programmer "friendly". Written in Lisp with what I hope is sane organization.
+* Write your posts in Markdown, have them rendered to Github flavored markdown, and then get syntax highlighted code blocks. 
 * [Ring][5] compatible, so you can use existing Ring middleware to wrap your requests.
 * Template driven with a layout style somewhat similar to Rails. Uses [StringTemplate][2].
 * Fast, thanks to [Netty][3].
