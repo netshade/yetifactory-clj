@@ -14,6 +14,8 @@
     (match [uri method request]
       [#"^/(index)?$"                 :get      _]
         :index
+      ["/feed.rss"                    :get      _]
+        :index-rss
       [#"^/post/(\d+)-.*$"            :get      _]
         :show-post
       ["/teapot"                      :get      _]

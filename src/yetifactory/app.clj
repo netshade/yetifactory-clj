@@ -1,5 +1,7 @@
 (ns yetifactory.app
   (:use [clojure.stacktrace])
+  (:import [java.util Date]
+            [java.text SimpleDateFormat])
   (:require [clojure.pprint :as pprint])
   (:require [yetifactory.posts :as posts])
   (:require [clojure.string :as string]))
@@ -21,6 +23,17 @@
     :template     (if (= (:accept request) "text/csv") "index_csv" "index")
     :layout       (if (= (:accept request) "text/csv") nil "layout")
   })
+
+(defn index-rss [request]
+  (let [all-posts (posts/list-all)
+        formatter (SimpleDateFormat. "EEE dd MMM yyyy HH:mm:ss Z" java.util.Locale/US)
+        posts     (map #( merge { :pub_date (.format formatter (:created_at %)) } %) all-posts) ]
+    {:status        200
+      :vars         { :posts  posts }
+      :template     "index_rss"
+      :layout       nil
+      :headers      { "Content-Type" "application/rss+xml" }
+    }))
 
 (defn show-post [request]
   (if-let [post (posts/list-one (slug-from-request request))]
