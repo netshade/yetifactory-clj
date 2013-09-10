@@ -4,4 +4,3 @@
 # clojure.core.match doesn't
 # behave well when being AOT run.
 lein deps
-true
