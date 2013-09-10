@@ -16,6 +16,7 @@ post.
 * Automatically uploads local assets to S3 if they are referenced in the outgoing post.
 * Written in short spurts over the past two weeks, so you know the software quality is high
 * No tests, because laziness
+* Disqus integration! Google Analytics integration! Are these features! I don't know!
 
 ## TODO:
 
