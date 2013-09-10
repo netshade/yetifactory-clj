@@ -17,6 +17,7 @@ post.
 * Written in short spurts over the past two weeks, so you know the software quality is high
 * No tests, because laziness
 * Disqus integration! Google Analytics integration! Are these features! I don't know!
+* RSS support! Just in relevant time
 
 ## TODO:
 
@@ -25,12 +26,11 @@ post.
 * Better caching header defaults.
 * Environment specific behavior, like template loading.
 * Maybe? not use environment variables for config everywhere.
-* RSS support probably.
 * Remove yetifactory name, come up with a better name
 * Remove my specific blog styling, keep in a separate branch. Maybe.
 * `grep -ri 'TODO' .`
-* A 500 page
-* Pagination, probably for when I write > 20 blog posts
+* A 500 page, i don't expect it will see much use tho
+* Pagination, probably for when I write > 20 blog posts. Probably a hard problem in Lisp tho, [amirite eh eh](http://news.ycombinator.com/)
 
 The command line driver is available in `bin/live`, and may be configured in
 a shell file avaliable in `$HOME/.blog`. See the configuration section for
