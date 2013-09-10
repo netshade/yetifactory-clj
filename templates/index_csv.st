@@ -1,3 +1,3 @@
 $posts:{post|
-"$post.slug$","$post.title$"
+"$post.id$","$post.slug$","$post.title$"
 }$

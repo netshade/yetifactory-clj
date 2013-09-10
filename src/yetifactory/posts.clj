@@ -49,16 +49,24 @@
         title-only-word-chars (string/replace title #"[^\w]" "-")]
         (string/join "-" [ts title-only-word-chars])))
 
+;; This method presumes the query has:
+;; one %s token in it to take the identity column name
+;; the "?" token that the value will be replacing is the last one in the query params
+;; TODO: this method is a clear litmus test for putting a better db lib in here. junk this eventually.
+(defn- query-posts-from-map
+  [query id-or-slug-map & query-values]
+  (if-let [slug (:slug id-or-slug-map)]
+    (filter #(not(nil? %)) (conj (vec (concat [(format query "slug")] (or query-values []))) slug))
+    (if-let [id (:id id-or-slug-map)]
+      (filter #(not(nil? %)) (conj (vec (concat [(format query "id")] (or query-values []))) id))
+      (throw (Throwable. "Can't generate query from parameters")))))
+
 (defn list-all []
   (map post-data (j/query (db/db-connection) ["SELECT * FROM posts ORDER BY created_at DESC"])))
 
 (defn list-one
-  [post-slug]
-  (post-data (first (j/query (db/db-connection) ["SELECT * FROM posts WHERE slug = ?" post-slug]))))
-
-(defn list-one-by-id
-  [post-id]
-  (post-data (first (j/query (db/db-connection) ["SELECT * FROM posts WHERE id = ?" post-id]))))
+  [post-params]
+  (post-data (first (j/query (db/db-connection) (query-posts-from-map "SELECT * FROM posts WHERE %s = ?" post-params)))))
 
 (defn create
   [content]
@@ -73,23 +81,23 @@
       body
       content
       snippet])
-    { :title title :slug slug :body body }))
+    { :title title :body body }))
 
 (defn update
-  [slug content]
+  [post-params content]
   (let [title (title-from-text content)
         body (github-markdown content)
         snippet (github-markdown (body-snippet 4096 content))]
-    (j/execute! (db/db-connection) [
-      "UPDATE posts SET title = ?, body = ?, body_md = ?, snippet = ?, updated_at = NOW() WHERE slug = ?"
+    (j/execute! (db/db-connection) (query-posts-from-map
+      "UPDATE posts SET title = ?, body = ?, body_md = ?, snippet = ?, updated_at = NOW() WHERE %s = ?"
+      post-params
       title
       body
       content
-      snippet
-      slug])
-    { :title title :slug slug :body body }))
+      snippet))
+    { :title title :body body }))
 
 (defn destroy
-  [slug]
-  (j/execute! (db/db-connection) ["DELETE FROM posts WHERE slug = ?" slug]))
+  [post-params]
+  (j/execute! (db/db-connection) (query-posts-from-map "DELETE FROM posts WHERE %s = ?" post-params)))
 

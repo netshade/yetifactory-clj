@@ -8,7 +8,24 @@
 
 
 (defn- slug-from-request [request]
-  (string/replace-first (:uri request) #"/post/", ""))
+  (if-let [match (re-find #"^(/post/)(\d+-.*)$" (:uri request))]
+    (if (= (count match) 3)
+      (last match)
+      nil)))
+
+(defn- id-from-request [request]
+  (if-let [match (re-find #"^(/post/)(\d+)$" (:uri request))]
+    (if (= (count match) 3)
+      (last match)
+      nil)))
+
+(defn- post-info-from-request [request]
+  (if-let [slug (slug-from-request request)]
+    {:slug slug}
+    (if-let [id (id-from-request request)]
+      {:id id}
+      (throw (Throwable. "Unable to get post info from request")))))
+
 
 (defn notfound [request]
   {:status 404 :body "Not Found" })
@@ -35,7 +52,7 @@
     }))
 
 (defn show-post [request]
-  (if-let [post (posts/list-one (slug-from-request request))]
+  (if-let [post (posts/list-one (post-info-from-request request))]
     (if (= (:accept request) "text/markdown")
       { :status 200 :body (:body_md post) }
       { :status 200 :vars {:post post } })
@@ -49,15 +66,15 @@
 (defn destroy-post [request]
   (if-let [slug (slug-from-request request)]
     (do
-      (posts/destroy slug)
+      (posts/destroy (post-info-from-request request))
       {:status 200 :body "Destroyed"})
     (notfound request)))
 
 (defn update-post [request]
   (let [body (slurp (:body request))]
-    (if-let [slug (slug-from-request request)]
+    (if-let [post-info (post-info-from-request request)]
       (do
-        (posts/update slug body)
+        (posts/update post-info body)
         {:status 200 :body "Updated"})
       (notfound request))))
 

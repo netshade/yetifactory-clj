@@ -16,15 +16,15 @@
         :index
       ["/feed.rss"                    :get      _]
         :index-rss
-      [#"^/post/(\d+)-.*$"            :get      _]
+      [#"^/post/(\d+)-?.*$"           :get      _]
         :show-post
       ["/teapot"                      :get      _]
         :teapot
       ["/post"                        :post     _]
         :create-post
-      [#"^/post/(\d+)-.*$"            :delete   _]
+      [#"^/post/(\d+)-?.*$"           :delete   _]
         :destroy-post
-      [#"^/post/(\d+)-.*$"            :put      _]
+      [#"^/post/(\d+)-?.*$"           :put      _]
         :update-post
       :else
         :notfound)))
