@@ -27,14 +27,7 @@ section h1 {
   display:none;
 }
 
-nav h3 a {
+nav h3 a, nav h3 a:hover {
   color: #333;
   text-decoration: none;
-}
-
-nav h3 a:hover {
-  color: #333;
-  text-decoration: none;
-  font-weight: bold;
-
 }
