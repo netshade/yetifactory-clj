@@ -57,7 +57,7 @@
         nil)))
 
 (defn wrap-template
-  [handler template-root]
+  [handler template-root template-defaults]
   (fn [req]
     (reload-if-modified template-root)
     (let [route-name                       (name (router/recognize req))
@@ -65,7 +65,7 @@
           response-map                     (handler req)
           template-options                 (merge template-options-default response-map)
           template-name                    (:template template-options)
-          template-vars                    (merge {} (:vars template-options))
+          template-vars                    (merge (or {} template-defaults) (:vars template-options))
           template-layout                  (.getInstanceOf templatemap (layout-name-from-response template-options))
           template-route                   (.getInstanceOf templatemap template-name)
           all-templates                    (filter #(not (nil? %)) [template-layout template-route])

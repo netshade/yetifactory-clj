@@ -11,15 +11,17 @@
   (:require [clojure.pprint :as pprint]))
 
 (defn -main []
-  (let [port (or (env :port) 5000)]
+  (let [port (or (env :port) 5000)
+        template-defaults { :google_analytics_id (env :google-analytics-id)
+                            :disqus_name         (env :disqus-name) }]
     (adapter/run-server
         (header-defaults/wrap-header-defaults
           (file-info/wrap-file-info
             (file/wrap-file
-              (template/wrap-template router/route "./templates")
+              (template/wrap-template router/route "./templates" template-defaults)
             "./public"))
           {
             "Content-Type"  "text/html"
-            "Cache-Control" "no-cache, no-store"
+            "Cache-Control" "private, max-age=0, must-revalidate"
           })
       { :port (if (string? port) (Integer/parseInt port) port) })))
