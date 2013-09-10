@@ -11,8 +11,7 @@
   (string/replace-first (:uri request) #"/post/", ""))
 
 (defn notfound [request]
-  {:status 404
-    :body "Not Found" })
+  {:status 404 :body "Not Found" })
 
 (defn teapot [request]
   { :status 418 :body "halo" })
