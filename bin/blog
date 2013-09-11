@@ -54,7 +54,7 @@ case "$1" in
            douploads $TEMPFILE && \
            curl -f -vvvv --user "${USERNAME}:${PASSWORD}" --data-binary "@${TEMPFILE}" "${BLOGHOST}/post" && \
            rm $TEMPFILE ||
-           cp $TEMPFILE . && echo "Save aborted, post copied to ${BASETEMP}"
+           (cp $TEMPFILE . && echo "Save aborted, post copied to ${BASETEMP}")
          ;;
   "list") curl -H "Accept: text/csv" "${BLOGHOST}/index"
           ;;
@@ -66,7 +66,7 @@ case "$1" in
             douploads $TEMPFILE && \
             curl -f --user "${USERNAME}:${PASSWORD}" --data-binary "@${TEMPFILE}" -X PUT "${BLOGHOST}/post/${2}" && \
             rm $TEMPFILE ||
-            cp $TEMPFILE . && echo "Save aborted, post copied to ${BASETEMP}"
+            (cp $TEMPFILE . && echo "Save aborted, post copied to ${BASETEMP}")
           ;;
   "destroy") curl -f --user "${USERNAME}:${PASSWORD}" -X DELETE "${BLOGHOST}/post/${2}"
              ;;
