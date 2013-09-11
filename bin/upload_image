@@ -13,7 +13,7 @@ fi
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 if [ -s $TARGET_FILE ]; then
-  FNAME=$(basename ${TARGET_FILE})
+  FNAME=$(basename "${TARGET_FILE}")
   $DIR/aws mkdir $S3_BUCKET
   $DIR/aws put "${S3_BUCKET}/${FNAME}" $TARGET_FILE
   echo "${TARGET_FILE}://s3.amazonaws.com/${S3_BUCKET}/${FNAME}"

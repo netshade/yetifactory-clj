@@ -39,7 +39,9 @@ function douploads()
                           xargs -I{} sh -c "[ -f {} ] && echo '{}'" | \
                           sort | \
                           uniq)
-    echo "${LOCAL_FILES}" | $script | ruby -ne "local, remote = \$_.chomp.split(/:/); c = nil; File.open('${1}', 'r+') { |f| c = f.read.to_s.gsub(local, remote); f.rewind; f.write(c) }; puts(remote)"  # sorry
+    if [ ! -z "$LOCAL_FILES" -a "$LOCAL_FILES" != " " ]; then
+      echo "${LOCAL_FILES}" | $script | ruby -ne "local, remote = \$_.chomp.split(/:/); c = nil; File.open('${1}', 'r+') { |f| c = f.read.to_s.gsub(local, remote); f.rewind; f.write(c) }; puts(remote)"  # sorry
+    fi
   else
     return 0
   fi
@@ -48,7 +50,7 @@ function douploads()
 # TODO: Centralize new and edit behavior
 case "$1" in
   "new") TEMPFILE=$(mdtemp "new-blog-post")
-         BASETEMP=$(basename ${TEMPFILE})
+         BASETEMP=$(basename "${TEMPFILE}")
          $EDITOR $TEMPFILE && \
            [ -s $TEMPFILE ] && \
            douploads $TEMPFILE && \
@@ -59,7 +61,7 @@ case "$1" in
   "list") curl -H "Accept: text/csv" "${BLOGHOST}/index"
           ;;
   "edit") TEMPFILE=$(mdtemp "${2}")
-          BASETEMP=$(basename ${TEMPFILE})
+          BASETEMP=$(basename "${TEMPFILE}")
           curl -f -o $TEMPFILE -H "Accept: text/markdown" "${BLOGHOST}/post/${2}"
           $EDITOR $TEMPFILE && \
             [ -s $TEMPFILE ] && \
