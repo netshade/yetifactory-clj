@@ -9,7 +9,7 @@ post.
 ## Features:
 
 * Programmer "friendly". Written in Lisp with what I hope is sane organization.
-* Write your posts in Markdown, have them rendered to Github flavored markdown, and then get syntax highlighted code blocks. 
+* Write your posts in Markdown, have them rendered to Github flavored markdown, and then get syntax highlighted code blocks.
 * [Ring][5] compatible, so you can use existing Ring middleware to wrap your requests.
 * Template driven with a layout style somewhat similar to Rails. Uses [StringTemplate][2].
 * Fast, thanks to [Netty][3].
@@ -32,13 +32,14 @@ post.
 * `grep -ri 'TODO' .`
 * A 500 page, i don't expect it will see much use tho
 * Pagination, probably for when I write > 20 blog posts. Probably a hard problem in Lisp tho, [amirite eh eh](http://news.ycombinator.com/)
+* Namespace auto uploaded images such that identical files don't conflict from post to post...or do they.
 
 The command line driver is available in `bin/live`, and may be configured in
 a shell file avaliable in `$HOME/.blog`. See the configuration section for
 more details.
 
 Originally taken from [clojure-netty][1], now me playing around w/ different
-concepts in clojure to render webpages.  
+concepts in clojure to render webpages.
 
 ## Configuration
 
