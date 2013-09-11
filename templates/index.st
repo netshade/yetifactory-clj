@@ -11,7 +11,13 @@ $posts:{post|
     <p class="snippet">
 $post.snippet$
     </p>
-    <a href="/post/$post.slug$#disqus_thread">Read more...</a>
+    <a href="/post/$post.slug$#disqus_thread">
+      $if(post.truncated)$
+        Read more...
+      $else$
+        Comment
+      $endif$
+    </a>
   </section>
 }$
 

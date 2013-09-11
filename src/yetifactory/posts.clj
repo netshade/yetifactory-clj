@@ -25,7 +25,8 @@
             created-at-ago  (.format p (:created_at post))
             updated-at-ago  (.format p (:updated_at post))]
           (merge post { :created_at_ago  created-at-ago
-                        :updated_at_ago  updated-at-ago }))))
+                        :updated_at_ago  updated-at-ago
+                        :truncated       (not (= (:body post) (:snippet post))) }))))
 
 (defn- github-markdown
   [body]
