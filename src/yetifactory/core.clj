@@ -13,7 +13,8 @@
 (defn -main []
   (let [port (or (env :port) 5000)
         template-defaults { :google_analytics_id (env :google-analytics-id)
-                            :disqus_name         (env :disqus-name) }]
+                            :disqus_name         (env :disqus-name)
+                            :gauges_id           (env :gauges-id) }]
     (adapter/run-server
         (header-defaults/wrap-header-defaults
           (file-info/wrap-file-info
