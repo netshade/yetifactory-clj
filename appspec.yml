@@ -1,0 +1,24 @@
+version: 0.0
+os: linux
+files:
+  - source: script
+    destination: /app/script
+  - source: bin
+    destination: /app/bin
+  - source: pom.xml
+    destination: /app/pom.xml
+  - source: project.clj
+    destination: /app/project.clj
+  - source: public
+    destination: /app/public
+  - source: src
+    destination: /app/src
+  - source: system.properties
+    destination: /app/system.properties
+  - source: templates
+    destination: /app/templates
+hooks:
+  ApplicationStop:
+    - location: script/stop.sh
+  ApplicationStart:
+    - location: script/start.sh
