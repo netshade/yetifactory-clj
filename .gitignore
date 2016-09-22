@@ -3,4 +3,4 @@
 pom.xml
 target
 .blog
-config/production.properties
+config/production.*
