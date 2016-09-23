@@ -15,6 +15,11 @@ files:
     destination: /app/system.properties
   - source: templates
     destination: /app/templates
+permissions:
+  - object: /app/script
+    pattern: "*.sh"
+    mode: 755
+    type: file  
 hooks:
   ApplicationStop:
     - location: script/stop.sh
