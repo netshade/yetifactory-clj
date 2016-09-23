@@ -20,5 +20,6 @@ files:
 hooks:
   BeforeInstall:
     - location: script/stop.sh
+    - location: script/clean.sh
   ApplicationStart:
     - location: script/start.sh
