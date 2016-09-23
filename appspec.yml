@@ -18,7 +18,7 @@ files:
   - source: templates
     destination: /app/templates
 hooks:
-  ApplicationStop:
+  BeforeInstall:
     - location: script/stop.sh
   ApplicationStart:
     - location: script/start.sh
