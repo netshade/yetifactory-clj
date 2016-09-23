@@ -19,7 +19,8 @@ permissions:
   - object: /app/script
     pattern: "*.sh"
     mode: 755
-    type: file  
+    type:
+      - file  
 hooks:
   ApplicationStop:
     - location: script/stop.sh
