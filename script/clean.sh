@@ -1,2 +1,2 @@
 #!/bin/bash
-rm -fr /app/*
+find . ! \( -name "*.pid" -o -name "*.log" -o -name "ENV" \) -type f -delete
