@@ -5,8 +5,6 @@ files:
     destination: /app/script
   - source: bin
     destination: /app/bin
-  - source: pom.xml
-    destination: /app/pom.xml
   - source: project.clj
     destination: /app/project.clj
   - source: public
