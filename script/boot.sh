@@ -8,7 +8,7 @@ DEPLOY_TAG="role"
 DEPLOY_TAG_VALUE="web"
 IAM_USER_NAME="$(hostname)"
 INSTANCE_NAME="docker-${IAM_USER_NAME}"
-aws iam create-user ${IAM_USER_NAME}
+aws iam create-user --user-name ${IAM_USER_NAME}
 aws iam create-access-key --user-name ${IAM_USER_NAME} > /tmp/CREDENTIALS
 ACCESS_KEY_ID=$(grep AccessKeyId /tmp/credentials | awk -F': ' '{print $2}' | sed 's/[\",]//g')
 SECRET_ACCESS_KEY=$(grep SecretAccessKey /tmp/credentials | awk -F': ' '{print $2}' | sed 's/[\",]//g')
