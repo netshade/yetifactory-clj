@@ -23,6 +23,6 @@ permissions:
       - file
 hooks:
   ApplicationStop:
-    - location: /usr/local/bin/stop.sh
+    - location: bash script/stop.sh
   ApplicationStart:
-    - location: /usr/local/bin/start.sh
+    - location: bash script/start.sh
