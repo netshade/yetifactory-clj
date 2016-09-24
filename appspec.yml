@@ -16,11 +16,11 @@ files:
   - source: templates
     destination: /app/templates
 permissions:
-  - object: /app/script/start.sh
+  - object: script/start.sh
     mode: 755
     type:
       - file
-  - object: /app/script/stop.sh
+  - object: script/stop.sh
     mode: 755
     type:
       - file
