@@ -27,10 +27,10 @@ chmod +x /etc/rc6.d/K99remove_iam_user
 mkdir -p /etc/codedeploy-agent/conf
 cat <<EOF >/etc/codedeploy-agent/conf/codedeploy.onpremises.yml
 ---
-aws_access_key_id: ${ACCESS_KEY_ID}
-aws_secret_access_key: ${SECRET_ACCESS_KEY}
-iam_user_arn: ${ARN}
-region: ${AWS_REGION}
+aws_access_key_id: "${ACCESS_KEY_ID}"
+aws_secret_access_key: "${SECRET_ACCESS_KEY}"
+iam_user_arn: "${ARN}"
+region: "${AWS_REGION}"
 EOF
 /etc/init.d/codedeploy-agent restart
 while [ ! -f /tmp/STOP ]
