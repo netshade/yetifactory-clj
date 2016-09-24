@@ -1,20 +1,8 @@
 version: 0.0
 os: linux
 files:
-  - source: script
-    destination: /app/script
-  - source: bin
-    destination: /app/bin
-  - source: project.clj
-    destination: /app/project.clj
-  - source: public
-    destination: /app/public
-  - source: src
-    destination: /app/src
-  - source: system.properties
-    destination: /app/system.properties
-  - source: templates
-    destination: /app/templates
+  - source: /
+    destination: /app
 permissions:
   - object: script/start.sh
     mode: 755
