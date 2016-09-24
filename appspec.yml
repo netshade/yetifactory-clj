@@ -20,9 +20,9 @@ permissions:
     pattern: "*.sh"
     mode: 755
     type:
-      - file  
+      - file
 hooks:
   ApplicationStop:
-    - location: script/stop.sh
+    - location: /app/script/stop.sh
   ApplicationStart:
-    - location: script/start.sh
+    - location: /app/script/start.sh
