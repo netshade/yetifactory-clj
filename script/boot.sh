@@ -3,14 +3,32 @@ if [ -e "/tmp/ENV" ]
 then
   source /tmp/ENV
 fi
-sleep 10
-export TASK_ARN="$(curl $(ip neighbor | head -n 1 | awk '{print $1}'):51678/v1/tasks?dockerid=$(head -n 1 /proc/self/cgroup | awk -F':' '{print $3}' | sed 's/\/docker\///') | grep -oE 'arn:[^\"]+')"
+DEPLOY_GROUP="deployers"
+DEPLOY_TAG="role"
+DEPLOY_TAG_VALUE="web"
+IAM_USER_NAME="$(hostname)"
+INSTANCE_NAME="docker-${IAM_USER_NAME}"
+aws iam create-user ${IAM_USER_NAME}
+aws iam create-access-key --user-name ${IAM_USER_NAME} > /tmp/CREDENTIALS
+ACCESS_KEY_ID=$(grep AccessKeyId /tmp/credentials | awk -F': ' '{print $2}' | sed 's/[\",]//g')
+SECRET_ACCESS_KEY=$(grep SecretAccessKey /tmp/credentials | awk -F': ' '{print $2}' | sed 's/[\",]//g')
+ARN=$(aws iam get-user --user-name deleteme --query "User.Arn" --output text)
+aws iam add-user-to-group --user-name ${IAM_USER_NAME} --group-name ${DEPLOY_GROUP}
+aws deploy register-on-premises-instance --instance-name ${INSTANCE_NAME} --iam-user-arn ${ARN} --region ${AWS_REGION}
+aws deploy add-tags-to-on-premises-instances --instance-names ${INSTANCE_NAME} --tags Key=${DEPLOY_TAG},Value=${DEPLOY_TAG_VALUE} --region ${AWS_REGION}
+cat <<EOF >/etc/rc6.d/K99_remove_iam_user
+aws deploy deregister-on-premises-instance --instance-name ${INSTANCE_NAME} --region ${AWS_REGION}
+aws iam remove-user-from-group --user-name ${IAM_USER_NAME} --group-name ${DEPLOY_GROUP}
+aws iam delete-access-key --user-name ${IAM_USER_NAME} --access-key-key-id ${ACCESS_KEY_ID}
+aws iam delete-user --user-name ${IAM_USER_NAME}
+EOF
+chmod +x /etc/rc6.d/k99_remove_iam_user
 mkdir -p /etc/codedeploy-agent/conf
 cat <<EOF >/etc/codedeploy-agent/conf/codedeploy.onpremises.yml
 ---
-aws_access_key_id: ${AWS_ACCESS_KEY_ID}
-aws_secret_access_key: ${AWS_SECRET_ACCESS_KEY}
-iam_user_arn: ${TASK_ARN}
+aws_access_key_id: ${ACCESS_KEY_ID}
+aws_secret_access_key: ${SECRET_ACCESS_KEY}
+iam_user_arn: ${ARN}
 region: ${AWS_REGION}
 EOF
 /etc/init.d/codedeploy-agent restart
