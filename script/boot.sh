@@ -24,7 +24,7 @@ function clean_up {
   aws iam delete-user --user-name ${IAM_USER_NAME}
 	exit
 }
-trap clean_up SIGHUP SIGINT SIGTERM
+trap clean_up SIGHUP SIGINT SIGTERM SIGKILL
 mkdir -p /etc/codedeploy-agent/conf
 cat <<EOF >/etc/codedeploy-agent/conf/codedeploy.onpremises.yml
 ---
