@@ -16,13 +16,16 @@ files:
   - source: templates
     destination: /app/templates
 permissions:
-  - object: /app/script
-    pattern: "*.sh"
+  - object: /app/script/start.sh
+    mode: 755
+    type:
+      - file
+  - object: /app/script/stop.sh
     mode: 755
     type:
       - file
 hooks:
   ApplicationStop:
-    - location: bash script/stop.sh
+    - location: /app/script/stop.sh
   ApplicationStart:
-    - location: bash script/start.sh
+    - location: /app/script/start.sh
