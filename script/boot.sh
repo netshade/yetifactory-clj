@@ -36,6 +36,6 @@ EOF
 /etc/init.d/codedeploy-agent restart
 while [ ! -f /tmp/STOP ]
 do
-  sleep 30
+  sleep 1
 done
 exit 0
