@@ -26,6 +26,6 @@ permissions:
       - file
 hooks:
   ApplicationStop:
-    - location: /app/script/stop.sh
+    - location: script/stop.sh
   ApplicationStart:
-    - location: /app/script/start.sh
+    - location: script/start.sh
