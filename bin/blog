@@ -15,7 +15,7 @@ fi
 
 function mdtemp()
 {
-  local tempfile=$(mktemp -t $1)
+  local tempfile=$(mktemp -t "$1XXX")
   local mdtemp="${tempfile}.md"
   mv $tempfile $mdtemp
   echo "$mdtemp"
@@ -54,7 +54,7 @@ case "$1" in
          $EDITOR $TEMPFILE && \
            [ -s $TEMPFILE ] && \
            douploads $TEMPFILE && \
-           curl -f -vvvv --user "${USERNAME}:${PASSWORD}" --data-binary "@${TEMPFILE}" "${BLOGHOST}/post" && \
+           curl -f -vvvv -H "Expect: " --user "${USERNAME}:${PASSWORD}" --data-binary "@${TEMPFILE}" "${BLOGHOST}/post" && \
            rm $TEMPFILE ||
            (cp $TEMPFILE . && echo "Save aborted, post copied to ${BASETEMP}")
          ;;
@@ -62,15 +62,15 @@ case "$1" in
           ;;
   "edit") TEMPFILE=$(mdtemp "${2}")
           BASETEMP=$(basename "${TEMPFILE}")
-          curl -f -o $TEMPFILE -H "Accept: text/markdown" "${BLOGHOST}/post/${2}"
+          curl -f -H "Expect: " -o $TEMPFILE -H "Accept: text/markdown" "${BLOGHOST}/post/${2}"
           $EDITOR $TEMPFILE && \
             [ -s $TEMPFILE ] && \
             douploads $TEMPFILE && \
-            curl -f --user "${USERNAME}:${PASSWORD}" --data-binary "@${TEMPFILE}" -X PUT "${BLOGHOST}/post/${2}" && \
+            curl -f -H "Expect: " --user "${USERNAME}:${PASSWORD}" --data-binary "@${TEMPFILE}" -X PUT "${BLOGHOST}/post/${2}" && \
             rm $TEMPFILE ||
             (cp $TEMPFILE . && echo "Save aborted, post copied to ${BASETEMP}")
           ;;
-  "destroy") curl -f --user "${USERNAME}:${PASSWORD}" -X DELETE "${BLOGHOST}/post/${2}"
+  "destroy") curl -f -H "Expect: " --user "${USERNAME}:${PASSWORD}" -X DELETE "${BLOGHOST}/post/${2}"
              ;;
 esac
 
